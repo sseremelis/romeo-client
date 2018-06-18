@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import moment from 'moment'
 import * as Tile from './TileComponents'
 
 export class Profile extends Component {
@@ -19,10 +19,7 @@ export class Profile extends Component {
         <Tile.TileImage image={picture ? picture.url : ''} />
         <Tile.HoverInfo className="hover">
           <Tile.LastOnline>
-            Last seen online: {new Date(last_login).toLocaleDateString()} at{' '}
-            {new Date(last_login).getHours()}:{new Date(
-              last_login
-            ).getMinutes()}
+            Last seen online: {moment(last_login).fromNow()}
           </Tile.LastOnline>
           <Tile.Headline>{headline}</Tile.Headline>
         </Tile.HoverInfo>
