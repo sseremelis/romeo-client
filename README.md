@@ -10,12 +10,13 @@ The project is now running at [http://localhost:3000](http://localhost:3000)
 
 In the given server, I added the following to be able to make request on my local network
 
-`.use(function(req, res, next) {
+`
+.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    )
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+      )
     next()
   })
 `
