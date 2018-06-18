@@ -1,39 +1,65 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import styled from 'react-emotion'
+
+import { Profile } from './Profile'
 
 class App extends Component {
-  sendRequest = () => {
-    let requestUrl = `${process.env.REACT_APP_API_URL}search`
+  constructor(props) {
+    super(props)
+    this.state = {
+      profiles: [{ personal: { age: '' }, location: { distance: '' } }]
+    }
+  }
 
-    fetch(requestUrl, {
-      credentials: 'include', // include, same-origin, *omit
-      headers: {
-        Accept:
-          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-      },
-      mode: 'no-cors'
+  sendRequest = requestUrl => {
+    return new Promise((resolve, reject) => {
+      fetch(requestUrl)
+        .then(res => res.json())
+        .then(
+          result => {
+            resolve(result)
+          },
+          error => {
+            this.setState({
+              error
+            })
+            console.log(error)
+            reject(error)
+          }
+        )
     })
-      .then(res => res.json())
-      .then(
-        result => {
-          console.log(result)
-        },
-        error => {
-          this.setState({
-            error
-          })
-        }
-      )
   }
 
   componentDidMount = () => {
-    this.sendRequest()
+    this.sendRequest(`${process.env.REACT_APP_API_URL}search?sorting=DISTANCE`)
+      .then(result => {
+        let requestParams = `${process.env.REACT_APP_API_URL}profiles?`
+        result.items.map(res => (requestParams += `ids=${res.id}&`))
+
+        return this.sendRequest(requestParams)
+      })
+      .then(result => {
+        console.log(result)
+        this.setState({
+          profiles: result
+        })
+      })
   }
 
   render() {
-    return <div>hello</div>
+    return (
+      <TilesWrapper>
+        {this.state.profiles.map((item, index) => (
+          <Profile key={index} profile={item} />
+        ))}
+      </TilesWrapper>
+    )
   }
 }
 
 export default App
+
+const TilesWrapper = styled('div')`
+  display: flex;
+  flex-wrap: wrap;
+`
