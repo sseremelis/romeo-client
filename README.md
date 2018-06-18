@@ -20,3 +20,9 @@ In the given server, I added the following to be able to make request on my loca
   next()
 })
 ```
+
+I liked the original design in the trial task image, so I decided to go with that design. To display more info, I used the hover over the profile image.
+
+I generally tried to make the design as responsive as possible.
+
+Finally, I used moment.js to display the "x time ago" message, it might be overkill, but it was the easiest way to me.
